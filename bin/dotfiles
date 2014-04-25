@@ -1,0 +1,117 @@
+#!/bin/sh
+
+# Helpful formatting. Use it, we will.
+function print_header()   { echo -e "\n==== \033[1m$@\033[0m"; }
+function print_success()  { echo -e "\033[1;32m:D\033[0m $@"; }
+function print_error()    { echo -e "\033[1;31m:(\033[0m $@"; }
+function print_warn()     { echo -e "\033[1;33m:|\033[0m $@"; }
+function print_info()     { echo -e "\033[1;36m--\033[0m $@"; }
+
+# TODO Add ability to install packages needed if not present
+# Do that here. Before everything else. Makes sense.
+# List of packages -> apt-get | yum, based on what's available
+# Until then, let's just fail fast if we don't have git! YUP
+if [[ ! "$(which git 2>/dev/null)" ]]; then
+    print_error "Git isn't installed! It should be! Aborting."
+fi
+
+# Get us rolling. Install or update as needed
+if [[ ! -d ~/.dotfiles ]]; then
+    print_header "~/.dotfiles doesn't exist. Cloning ${repo_url} to ~/.dotfiles"
+    #git clone https://github.com/tehbilly/dotfiles ~/.dotfiles
+    cd ~/.dotfiles
+    print_success "${repo_url} was cloned into ~/.dotfiles. We may now proceed."
+else
+    print_header "Updating ~/.dotfiles"
+    cd ~/.dotfiles
+    git pull
+    #git submodule update --init --recursive --quiet # Uncomment if submodules are ever added
+fi
+
+# Add ~/.dotfiles/bin to the path
+export PATH=~/.dotfiles/bin:$PATH
+
+# Bash? shopts
+if [[ "$SHELL" =~ bash ]]; then
+    shopt -s dotglob
+    shopt -s nullglob
+fi
+
+# If we make backups, where do we want them?
+backup_dir="$HOME/.dotfiles/backups/$(date "+%Y_%m_%d-%H_%M_%S")"
+
+## Functions for stage: copy
+function copy_header() { print_header "Copying files into home directory"; }
+function copy_test() {
+    local hash_src hash_dest
+    if [[ -e "$2" ]]; then
+        hash_src=$(md5sum $1 | cut -d ' ' -f 1)
+        hash_dest=$(md5sum $2 | cut -d ' ' -f 1)
+        if [[ "$hash_src" == "$hash_dest" ]]; then
+            echo "same file"
+        elif [[ "$1" -ot "$2" ]]; then
+            echo "destination file newer"
+        fi
+    fi
+}
+function copy_do() {
+    cp "$2" ~/
+    print_success "Copied ~/$1"
+}
+
+## Functions for stage: link
+function link_header() { print_header "Linking files into home directory"; }
+function link_test() {
+    [[ "$1" -ef "$2" ]] && echo "same file"
+}
+function link_do() {
+    ln -sf ${2#HOME/} ~/
+    print_success "Linked ~/$1"
+}
+
+function do_stage() {
+    local base dest skip
+    local files=(~/.dotfiles/$1/*)
+    # No files? Nothing to do.
+    if [[ ${#files[@]} == 0 ]]; then
+        print_info "No files found for stage '$1', skipping."
+        return
+    fi
+    # If we have a header function, print it!
+    [[ $(declare -f "$1_header") ]] && "$1_header"
+    # Start loopin' over them files, son
+    for file in "${files[@]}"; do
+        base=$(basename $file)
+        dest="$HOME/$base"
+        # Do we have a test function for this stage? Run it, if so
+        if [[ $(declare -f "$1_test") ]]; then
+            # If $1_test returns a string, skip this file and print the string
+            skip="$("$1_test" "$file" "$dest")"
+            if [[ "$skip" ]]; then
+              print_warn "Skipping ~/$base, $skip."
+              continue
+            fi
+        fi
+        # Does the file already exist in the destination? Move it to the backup directory
+        if [[ -e "$dest" ]]; then
+            print_info "Backing up ~/$base"
+            # Create backup directory if it doesn't exist
+            [[ -e "$backup_dir" ]] || mkdir -p "$backup_dir"
+            # Back it up (uh uh)
+            mv "$dest" "$backup_dir"
+        fi
+        # Just effin' do the thing already
+        "$1_do" "$base" "$file"
+    done
+}
+
+#do_stage "init" # Will be where we define our installation stuff perhaps!
+do_stage "copy"
+do_stage "link"
+
+# Were backups made? Reminder!
+backups=($backup_dir/*)
+if [[ -e "$backup_dir" && ${#backups[@]} -gt 0 ]]; then
+    print_header "Backups were made!"
+    print_info "Existing items were moved to $backup_dir"
+fi
