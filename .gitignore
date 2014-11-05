@@ -1,2 +1,4 @@
 # Ignore backups directory
 backups/
+# Ignore managed bundles for vim
+link/.vim/bundle/

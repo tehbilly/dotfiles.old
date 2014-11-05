@@ -1,11 +1,21 @@
-" Go stuff
-set rtp+=/cygdrive/c/apps/go/misc/vim
-
 " Basic setup
-set nocompatible " be iMproved
-runtime bundle/vim-pathogen/autoload/pathogen.vim
-execute pathogen#infect()
-syntax on
+set nocompatible
+filetype off
+
+" Using Vundle to handle packages for vim
+set rtp+=~/.vim/bundle/Vundle.vim
+"call vundle#begin('~/.vim.local/vundle')
+call vundle#begin()
+
+" Vundle can handle itself
+Plugin 'gmarik/Vundle.vim'
+" 50+ languages in one plugin? Makes perfect sense
+Plugin 'sheerun/vim-polyglot'
+" Git love
+Plugin 'tpope/vim-git'
+
+" Finished with vundling?
+call vundle#end()
 filetype plugin indent on
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -22,10 +32,6 @@ set autoread
 let mapleader = ","
 let g:mapleader = ","
 
-" NERDTree
-map <leader>t :NERDTree<cr>
-nmap <F3> :NERDTreeToggle<cr>
-
 " Fast saving
 nmap <leader>w :w!<cr>
 
@@ -41,7 +47,6 @@ autocmd! bufwritepost vimrc source ~/.vimrc
 " Set 7 lines to the cursor - when moving vertical..
 set so=7
 
-set wildmenu "Turn on WiLd menu
 set ruler "Always show current position
 set cmdheight=2 "The commandbar height
 set hid "Change buffer - without saving
