@@ -22,5 +22,5 @@ function _prmpt_load() {
 
 
 # Export the actual prompt
-export PS1="${_pbg}[${_pfg}\u@\h${_pbg}]\$(_prmpt_load)-[\$(_prmpt_pwd)\w${_pbg}]
+export PS1="${_pbg}[${_pfg}\u@\H${_pbg}]\$(_prmpt_load)-[\$(_prmpt_pwd)\w${_pbg}]
 ${_pbg}[${_pfg}\t${_pbg}]-[${_pfg}\!${_pbg}]>>\033[0m "

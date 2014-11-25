@@ -26,6 +26,6 @@ function dotfiles() {
 src
 
 # If ~/.bashrc.local exists, source it
-if [[ -e "~/.bashrc.local" ]]; then
+if [[ -e "$HOME/.bashrc.local" ]]; then
     source "$HOME/.bashrc.local"
 fi
