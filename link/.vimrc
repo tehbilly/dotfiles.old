@@ -13,6 +13,7 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'sheerun/vim-polyglot'
 " Git love
 Plugin 'tpope/vim-git'
+Plugin 'nanotech/jellybeans.vim'
 
 " Finished with vundling?
 call vundle#end()
@@ -101,7 +102,7 @@ set shell=/bin/bash
 set t_Co=256
 
 " Choose colorscheme
-colorscheme jellybeans
+color jellybeans
 
 set encoding=utf8
 try
