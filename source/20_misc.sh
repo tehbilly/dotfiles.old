@@ -1,5 +1,4 @@
 # Options set via environment variables
-export GREP_OPTIONS='--color=auto'
 export LESS=-XR
 
 # SSH auto-completion based on entries in known_hosts.

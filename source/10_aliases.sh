@@ -1,7 +1,7 @@
 # Generic aliases!
 alias ls="ls -lha --color=auto"
-#alias less="less -r"
-#alias grep="grep --color"
+
+alias grep="grep --color"
 alias find="find ${@} 2>/dev/null" # This stops find from flooding stderr for permission issues
 
 # Do we have an identity file? Probably want to use it.
