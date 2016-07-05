@@ -9,14 +9,19 @@ call vundle#begin()
 
 " Vundle can handle itself
 Plugin 'gmarik/Vundle.vim'
+
 " 50+ languages in one plugin? Makes perfect sense
-Plugin 'sheerun/vim-polyglot'
-" Git love
-Plugin 'tpope/vim-git'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-markdown'
 Plugin 'nanotech/jellybeans.vim'
+Plugin 'scrooloose/nerdtree'
+" Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plugin 'vim-airline/vim-airline'
+Plugin 'fatih/vim-go'
 
 " Finished with vundling?
 call vundle#end()
+
 filetype plugin indent on
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -49,7 +54,7 @@ autocmd! bufwritepost vimrc source ~/.vimrc
 set so=7
 
 set ruler "Always show current position
-set cmdheight=2 "The commandbar height
+"set cmdheight=2 "The commandbar height
 set hid "Change buffer - without saving
 set nu "Show line numbers
 
@@ -134,4 +139,10 @@ let g:airline_left_alt_sep = '|'
 let g:airline_right_sep = ''
 let g:airline_right_alt_sep = '|'
 set laststatus=2
+
+" Open NERDTree if no file(s) were specified
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" Close vim if NERDTree is the last window open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
