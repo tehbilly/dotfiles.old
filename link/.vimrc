@@ -4,20 +4,22 @@ filetype off
 
 " Using Vundle to handle packages for vim
 set rtp+=~/.vim/bundle/Vundle.vim
-"call vundle#begin('~/.vim.local/vundle')
+
 call vundle#begin()
 
 " Vundle can handle itself
 Plugin 'gmarik/Vundle.vim'
-" 50+ languages in one plugin? Makes perfect sense
-Plugin 'sheerun/vim-polyglot'
-" Git love
 Plugin 'tpope/vim-git'
-Plugin 'nanotech/jellybeans.vim'
+Plugin 'chriskempson/base16-vim'
+Plugin 'tmux-plugins/vim-tmux'
 
 " Finished with vundling?
 call vundle#end()
 filetype plugin indent on
+
+let base16colorspace=256
+set background=dark
+colorscheme base16-ocean
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Other general settings
@@ -100,11 +102,8 @@ set gfn=Monospace\ 10
 set shell=/bin/bash
 
 set t_Co=256
-
-" Choose colorscheme
-color jellybeans
-
 set encoding=utf8
+
 try
     lang en_US
 catch
