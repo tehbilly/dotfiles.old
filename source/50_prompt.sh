@@ -2,8 +2,8 @@
 
 # Colors for the prompt
 # 256 color code (replace ### with color code): \[\033[38;5;###m\]
-_pbg="\033[38;5;240m"
-_pfg="\033[38;5;248m"
+_pbg="\[\033[38;5;240m\]"
+_pfg="\[\033[38;5;248m\]"
 
 function _prmpt_pwd() {
     if [ -w $PWD ]; then
@@ -13,14 +13,6 @@ function _prmpt_pwd() {
     fi
 }
 
-function _prmpt_load() {
-    if [[ "$(type -P uptime)" ]]; then
-        uptime=$( uptime | sed 's/.*: //' | sed 's/,//g' )
-        echo -e "-[${_pfg}${uptime}${_pbg}]"
-    fi
-}
-
-
 # Export the actual prompt
-export PS1="${_pbg}[${_pfg}\u@\H${_pbg}]\$(_prmpt_load)-[\$(_prmpt_pwd)\w${_pbg}]
-${_pbg}[${_pfg}\t${_pbg}]-[${_pfg}\!${_pbg}]>>\033[0m "
+export PS1="${_pbg}[${_pfg}\u@\H${_pbg}]-[\[\$(_prmpt_pwd)\]\w${_pbg}]
+${_pbg}[${_pfg}\t${_pbg}]-[${_pfg}\!${_pbg}]>>\[\033[0m\] "
