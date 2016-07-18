@@ -15,6 +15,7 @@ Plugin 'tmux-plugins/vim-tmux'
 
 " Finished with vundling?
 call vundle#end()
+
 filetype plugin indent on
 
 let base16colorspace=256
@@ -51,7 +52,7 @@ autocmd! bufwritepost vimrc source ~/.vimrc
 set so=7
 
 set ruler "Always show current position
-set cmdheight=2 "The commandbar height
+"set cmdheight=2 "The commandbar height
 set hid "Change buffer - without saving
 set nu "Show line numbers
 
@@ -65,7 +66,7 @@ set smartcase
 set hlsearch "Highlight search things
 
 set incsearch "Make search act like search in modern browsers
-set nolazyredraw "Don't redraw while executing macros 
+set nolazyredraw "Don't redraw while executing macros
 
 set magic "Set magic on, for regular expressions
 
@@ -134,3 +135,8 @@ let g:airline_right_sep = ''
 let g:airline_right_alt_sep = '|'
 set laststatus=2
 
+" Open NERDTree if no file(s) were specified
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" Close vim if NERDTree is the last window open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
