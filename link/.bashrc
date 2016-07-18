@@ -3,6 +3,10 @@ if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
+# Base16 Shell: https://github.com/chriskempson/base16-shell
+BASE16_SHELL="$HOME/.config/base16-shell/scripts/base16-ocean.sh"
+[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+
 # Add our binaries to the path
 export PATH=~/.dotfiles/bin:$PATH
 
