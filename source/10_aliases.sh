@@ -1,5 +1,5 @@
 # Generic aliases!
-alias ls="ls -lha --color=auto"
+alias ls="ls --color=auto"
 alias grep="grep --color"
 alias find="find ${@} 2>/dev/null" # This stops find from flooding stderr for permission issues
 
@@ -9,11 +9,6 @@ alias docker-clean="docker rmi \$(docker images | awk '{if (\$2 == \"<none>\") p
 # Aria2 aliases
 if [[ "$(type -P aria2c)" ]]; then
     alias get='aria2c'
-fi
-
-# Do we have an identity file? Probably want to use it.
-if [[ -e ~/.ssh/id_rsa ]]; then
-    alias ssh="ssh -i ~/.ssh/id_rsa"
 fi
 
 # Directory listing

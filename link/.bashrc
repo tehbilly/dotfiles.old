@@ -1,10 +1,27 @@
+# If not running interactively, don't do anything
+[[ "$-" != *i* ]] && return
+
 # Source global definitions
 if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
+# Options I care about
+shopt -s nocaseglob
+set -o notify # Immediately notify of job termination
+
+# History tweaking
+shopt -s histappend
+export HISTIGNORE='[ \t]*:[fb]g:exit:ls*:ll*'
+export HISTCONTROL="${HISTCONTROL}${HISTCONTROL+,}ignoredups"
+export PROMPT_COMMAND="${PROMPT_COMMAND}${PROMPT_COMMAND+;}history -a"
+
+# Completions
+[[ -f /etc/bash_completion ]] && . /etc/bash_completion
+
 # Base16 Shell: https://github.com/chriskempson/base16-shell
-BASE16_SHELL="$HOME/.config/base16-shell/scripts/base16-ocean.sh"
+# TODO: Make 'er a submodule, or quick way to clone if needed
+BASE16_SHELL="$HOME/.dotfiles/base16-shell/scripts/base16-ocean.sh"
 [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
 # Add our binaries to the path
