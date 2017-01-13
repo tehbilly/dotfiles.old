@@ -18,5 +18,4 @@ _pfg="$(tput setaf 248)"
 #}
 
 # Export the actual prompt
-export PS1="${_pbg}[${_pfg}\u@\H${_pbg}]-[${_pfg}\w${_pbg}]\n${_pbg}[${_pfg}\t${_pbg}]-[${_pfg}\!${_pbg}]>>$(tput sgr0) "
-
+export PS1="\[${_pbg}\][\[${_pfg}\]\u@\H\[${_pbg}\]]-[\[${_pfg}\]\w\[${_pbg}\]]\n\[${_pbg}\][\[${_pfg}\]\t\[${_pbg}\]]-[\[${_pfg}\]\!\[${_pbg}\]]>>$(tput sgr0) "
